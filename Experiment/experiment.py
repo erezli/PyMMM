@@ -109,7 +109,7 @@ class Experiment:
             self.mean_amount = mean_amount
         else:
             warnings.warn("No mean_amount attribute set. Taking image means over all timepoints. Very slow!")
-            self.mean_amonut = self.num_timepoints
+            self.mean_amount = self.num_timepoints
         self.PC_channel = None
         self.trench_y_offsets = None
         self.y_peaks = None
@@ -143,15 +143,20 @@ class Experiment:
         else:
             return False
     
-    @dispatch(str, str, str)
     def coordinate_converter(self, FOV, channel, time):
-        return FOV, channel, time
-
-    @dispatch(int, int, int)
-    def coordinate_converter(self, FOV, channel, time):
-        FOV = self.FOVs[FOV]
-        channel = self.channels[channel]
-        time = self.times[time]
+        """
+        
+        :param FOV:
+        :param channel:
+        :param time:
+        :return:
+        """
+        if isinstance(FOV, int):
+            FOV = self.FOVs[FOV]
+        if isinstance(channel, int):
+            channel = self.channels[channel]
+        if isinstance(time, int):
+            time = self.times[time]
         return FOV, channel, time
 
 
